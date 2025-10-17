@@ -38,13 +38,13 @@ def msle(y_true, y_pred):
 def test_model(model, test_batches):
     """
     Tests the model based on a specific accuracy criterion and calculates the average test loss.
-    A prediction is considered correct only if both the predicted value and the true value are greater than 9.
-    The accuracy is calculated as the ratio of correct predictions to the total number of predictions that were greater than 9.
+    A prediction is considered correct only if both the predicted value and the true value are greater than 11.
+    The accuracy is calculated as the ratio of correct predictions to the total number of predictions that were greater than 11.
     """
     model.eval()
-    correct_predictions_over_9 = 0
-    total_predictions_over_9 = 0
-    both_under_9_count = 0
+    correct_predictions_over_11 = 0
+    total_predictions_over_11 = 0
+    both_under_11_count = 0
     test_loss_list = []
 
     with torch.no_grad():
@@ -62,27 +62,27 @@ def test_model(model, test_batches):
                 prediction_value = pred[i].item()
                 true_value = y[i].item()
 
-                if prediction_value > 9:
-                    total_predictions_over_9 += 1
-                    if true_value > 9:
-                        correct_predictions_over_9 += 1
+                if prediction_value > 11:
+                    total_predictions_over_11 += 1
+                    if true_value > 11:
+                        correct_predictions_over_11 += 1
                 
-                if prediction_value < 9 and true_value < 9:
-                    both_under_9_count += 1
+                if prediction_value < 11 and true_value < 11:
+                    both_under_11_count += 1
 
-    if total_predictions_over_9 == 0:
-        print("No predictions were over 9. Cannot calculate accuracy.")
+    if total_predictions_over_11 == 0:
+        print("No predictions were over 11. Cannot calculate accuracy.")
         accuracy = 0.0
     else:
-        accuracy = (correct_predictions_over_9 / total_predictions_over_9) * 100
+        accuracy = (correct_predictions_over_11 / total_predictions_over_11) * 100
     
     avg_loss = sum(test_loss_list) / len(test_loss_list) if test_loss_list else 0
 
-    return accuracy, correct_predictions_over_9, total_predictions_over_9, avg_loss, both_under_9_count
+    return accuracy, correct_predictions_over_11, total_predictions_over_11, avg_loss, both_under_11_count
 
 if __name__ == "__main__":
     # --- Configuration ---
-    DATASET_ROOT = "data/weibo/weibo_9"
+    DATASET_ROOT = "data/weibo/weibo_12"
     MODEL_PATH = 'best_model.pt'
     BATCH_SIZE = 64
 
@@ -121,7 +121,7 @@ if __name__ == "__main__":
     # --- Print Results ---
     print("\n--- Test Results ---")
     print(f"Average test loss: {avg_loss:>4f}")
-    print(f"Total predictions with value > 9: {total_count}")
-    print(f"Correct predictions (prediction > 9 AND ground truth > 9): {correct_count}")
-    print(f"Accuracy for predictions > 9: {accuracy:.2f}%")
-    print(f"Count where both prediction and ground truth are < 9: {both_under_9_count}")
+    print(f"Total predictions with value > 11: {total_count}")
+    print(f"Correct predictions (prediction > 11 AND ground truth > 11): {correct_count}")
+    print(f"Accuracy for predictions > 11: {accuracy:.2f}%")
+    print(f"Count where both prediction and ground truth are < 11: {both_under_9_count}")
